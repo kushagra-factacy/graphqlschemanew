@@ -4,7 +4,7 @@ const express = require(`express`);
 var { createHandler } = require("graphql-http/lib/use/express")
 const schema = require('./schema.js');
 const bodyParser= require('body-parser')
-
+const cors = require('cors')
 const resolvers = require('./resolver.js');
 
 
@@ -23,7 +23,7 @@ const validapikey = function(req,res,next){
         next()
 }
 
-
+app.use(cors())
 app.use(validapikey)
 app.use(bodyParser.json())
 app.all('/graphql',createHandler({

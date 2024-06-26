@@ -3,13 +3,17 @@ const {buildSchema} = require('graphql')
 const schema = buildSchema(`
 
 type Query {
-    getPatent(id: ID!): [Patent]
+    getPatent(Reference_Id: ID!): [Patent]
     persondata(Reference_Id: ID!): [PersonData ]
+    persondata2(limit : Int) : [PersonData]
     company(id: ID!): Company
     leidata(id: ID!) : LeiData
     proposed_investor(Reference_Id: ID!) : Proposed_Inv
     hello: String
     greet(name: String!): String
+    businessnews(Reference_Id: ID!) : BusinessNews
+    competitorData(Reference_Id: ID!): CompetitorData
+    esgcompany(Reference_Id: ID!): [ESGCompany]
   }
   type Company {
     id: ID!
@@ -48,7 +52,7 @@ type Query {
     Gst_Number: String
     Series: String
     Amount: String
-    Investors: String
+    Investors: [[String]]
     Lei: String
   }
   scalar FactacyIndustrialClassification
@@ -127,8 +131,8 @@ type Investor_Data {
 scalar Proposed_Investors
 
 type Patent {
-  id: String!
-  Reference_Id: String
+  Reference_Id: String!
+  id: String
   Reference_Container: String
   Application_Number: String
   Patent_Data: Patent_Data
@@ -146,15 +150,42 @@ type Patent_Data{
   Factacy_Patent_IC: String
   Industrial_Category: String
 }
-type Esg {
-  id: ID
-  Reference_Id: String
+
+type BusinessNews {
+  Reference_Id: ID
+  Art_Id: [String]
+  ORG: String
+  published_date: String
+  Output_CIN: String
+  Brand_Name: String
+  Legal_Name: String
+  Entity_Type: String
+  Company_SOS: String
+  id: String
   Reference_Container: String
-  Esg_Data: EsgData
+  
+}
+type CompetitorData {
+  id: ID!
+  Reference_Id: ID!
+  Reference_Container: String!
+  Competitor_Data: CompetitorInfo!
 }
 
+type CompetitorInfo {
+  Cin: String!
+  Brand_Name: String!
+  Company_Name: String!
+  Recommended_Company: [String!]!
+}
 
-type EsgData {
+type ESGCompany {
+  id: String
+  Reference_Id: String 
+  Reference_Container: String
+  Esg_Data: Esg_Data
+}
+type Esg_Data {
   Registration_Number: String
   Brand_Name: String
   ESG_Classification: [String]
@@ -164,6 +195,7 @@ type EsgData {
   Compound_Score: Float
   Art_Id: [String]
 }
+
 
  
 
